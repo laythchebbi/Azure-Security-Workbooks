@@ -1,0 +1,365 @@
+{
+  "version": "Notebook/1.0",
+  "items": [
+    {
+      "type": 12,
+      "content": {
+        "version": "NotebookGroup/1.0",
+        "groupType": "editable",
+        "title": "Charts",
+        "items": [
+          {
+            "type": 3,
+            "content": {
+              "version": "KqlItem/1.0",
+              "query": "// ## Storage accounts that have Public Network Access enabled\r\nResources\r\n| where type == 'microsoft.storage/storageaccounts'\r\n| extend  publicNetworkAccess = properties['networkAcls']['defaultAction']\r\n| project publicNetworkAccess, id\r\n| summarize id= count() by tostring(publicNetworkAccess)",
+              "size": 1,
+              "title": "Storage accounts that have Public Network Access enabled",
+              "queryType": 1,
+              "resourceType": "microsoft.resourcegraph/resources",
+              "crossComponentResources": [
+                "value::all"
+              ],
+              "visualization": "piechart"
+            },
+            "customWidth": "33",
+            "showPin": true,
+            "name": "query - 2",
+            "styleSettings": {
+              "margin": "4",
+              "showBorder": true
+            }
+          },
+          {
+            "type": 3,
+            "content": {
+              "version": "KqlItem/1.0",
+              "query": "Resources\r\n| where type == 'microsoft.storage/storageaccounts'\r\n| extend secureTransferRequired = iif(properties['supportsHttpsTrafficOnly'] == true, \"Enabled\", \"Disabled\")\r\n| project secureTransferRequired, id\r\n| summarize id= count() by tostring(secureTransferRequired)",
+              "size": 1,
+              "title": "Storage accounts that have HTTPs only enabled",
+              "queryType": 1,
+              "resourceType": "microsoft.resourcegraph/resources",
+              "crossComponentResources": [
+                "value::all"
+              ],
+              "visualization": "piechart"
+            },
+            "customWidth": "33",
+            "showPin": true,
+            "name": "query - 3",
+            "styleSettings": {
+              "margin": "4",
+              "showBorder": true
+            }
+          },
+          {
+            "type": 3,
+            "content": {
+              "version": "KqlItem/1.0",
+              "query": "Resources\r\n| where type == 'microsoft.storage/storageaccounts'\r\n| extend allowBlobPublicAccess = iif(properties['allowBlobPublicAccess'] == true, \"Enabled\", \"Disabled\")\r\n| project allowBlobPublicAccess, id\r\n| summarize id= count() by tostring(allowBlobPublicAccess)",
+              "size": 1,
+              "title": "Storage accounts that have Allow Anoynmous Blob Storage enabled",
+              "queryType": 1,
+              "resourceType": "microsoft.resourcegraph/resources",
+              "crossComponentResources": [
+                "value::all"
+              ],
+              "visualization": "piechart"
+            },
+            "customWidth": "33",
+            "name": "query - 5",
+            "styleSettings": {
+              "margin": "4",
+              "showBorder": true
+            }
+          },
+          {
+            "type": 3,
+            "content": {
+              "version": "KqlItem/1.0",
+              "query": "Resources\r\n| where type == 'microsoft.storage/storageaccounts'\r\n| extend minimumTlsVersion = properties['minimumTlsVersion'] \r\n| project minimumTlsVersion, id\r\n| summarize id= count() by tostring(minimumTlsVersion)",
+              "size": 1,
+              "title": "MinimMinimum TLS versions in Storage accounts",
+              "queryType": 1,
+              "resourceType": "microsoft.resourcegraph/resources",
+              "crossComponentResources": [
+                "value::all"
+              ],
+              "visualization": "piechart"
+            },
+            "customWidth": "33",
+            "showPin": true,
+            "name": "query - 7",
+            "styleSettings": {
+              "margin": "4",
+              "showBorder": true
+            }
+          },
+          {
+            "type": 3,
+            "content": {
+              "version": "KqlItem/1.0",
+              "query": "Resources\r\n| where type == 'microsoft.storage/storageaccounts'\r\n| extend allowSharedKeyAccess = iff(properties['allowSharedKeyAccess']== true, \"Allow SAS\", \"SAS not allowed\")\r\n| project allowSharedKeyAccess, id\r\n| summarize id= count() by tostring(allowSharedKeyAccess)",
+              "size": 1,
+              "title": "SAS key usage in Storage accounts",
+              "queryType": 1,
+              "resourceType": "microsoft.resourcegraph/resources",
+              "crossComponentResources": [
+                "value::all"
+              ],
+              "visualization": "piechart"
+            },
+            "customWidth": "33",
+            "showPin": true,
+            "name": "query - 8",
+            "styleSettings": {
+              "margin": "4",
+              "showBorder": true
+            }
+          },
+          {
+            "type": 3,
+            "content": {
+              "version": "KqlItem/1.0",
+              "query": "resources\n| where type == 'microsoft.storage/storageaccounts'\n| project location, id\n| summarize id= count() by location\n",
+              "size": 1,
+              "title": "Storage accounts locations",
+              "queryType": 1,
+              "resourceType": "microsoft.resourcegraph/resources",
+              "crossComponentResources": [
+                "value::all"
+              ],
+              "visualization": "piechart",
+              "tileSettings": {
+                "titleContent": {},
+                "showBorder": false,
+                "sortCriteriaField": "dcount_location",
+                "sortOrderField": 1,
+                "size": "full"
+              },
+              "graphSettings": {
+                "type": 0,
+                "topContent": {},
+                "nodeIdField": "id",
+                "sourceIdField": "name",
+                "targetIdField": "publicNetworkAccess",
+                "graphOrientation": 3,
+                "showOrientationToggles": false,
+                "nodeSize": null,
+                "staticNodeSize": 100,
+                "colorSettings": null,
+                "hivesMargin": 5,
+                "edgeColorSettings": null
+              },
+              "mapSettings": {
+                "locInfo": "AzureLoc",
+                "locInfoColumn": "location",
+                "sizeSettings": "location",
+                "sizeAggregation": "Sum",
+                "opacity": 1,
+                "labelSettings": "location",
+                "legendAggregation": "Sum",
+                "itemColorSettings": null
+              }
+            },
+            "customWidth": "33",
+            "showPin": true,
+            "name": "query - 1",
+            "styleSettings": {
+              "showBorder": true
+            }
+          }
+        ]
+      },
+      "name": "Charts",
+      "styleSettings": {
+        "showBorder": true
+      }
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "Resources\n| where type == 'microsoft.storage/storageaccounts'\n| extend publicNetworkAccess = properties['networkAcls']['defaultAction']\n| extend secureTransferRequired = iif(properties['supportsHttpsTrafficOnly'] == true, \"Enabled\", \"Disabled\")\n| extend allowBlobPublicAccess = iif(properties['allowBlobPublicAccess'] == true, \"Enabled\", \"Disabled\")\n| extend minimumTlsVersion = properties['minimumTlsVersion'] \n| extend allowSharedKeyAccess = iff(properties['allowSharedKeyAccess']== true, \"Allow SAS\", \"SAS not allowed\")\n| project name, publicNetworkAccess, secureTransferRequired, allowBlobPublicAccess, minimumTlsVersion,allowSharedKeyAccess\n",
+        "size": 3,
+        "title": "Sotrage accounts stats",
+        "showRefreshButton": true,
+        "showExportToExcel": true,
+        "exportToExcelOptions": "all",
+        "queryType": 1,
+        "resourceType": "microsoft.resourcegraph/resources",
+        "crossComponentResources": [
+          "value::all"
+        ],
+        "visualization": "table",
+        "showExpandCollapseGrid": true,
+        "gridSettings": {
+          "formatters": [
+            {
+              "columnMatch": "publicNetworkAccess",
+              "formatter": 18,
+              "formatOptions": {
+                "thresholdsOptions": "colors",
+                "thresholdsGrid": [
+                  {
+                    "operator": "==",
+                    "thresholdValue": "Allow",
+                    "representation": "redBright",
+                    "text": "{0}{1}"
+                  },
+                  {
+                    "operator": "==",
+                    "thresholdValue": "Deny",
+                    "representation": "green",
+                    "text": "{0}{1}"
+                  },
+                  {
+                    "operator": "Default",
+                    "thresholdValue": null,
+                    "representation": null,
+                    "text": "{0}{1}"
+                  }
+                ]
+              }
+            },
+            {
+              "columnMatch": "secureTransferRequired",
+              "formatter": 18,
+              "formatOptions": {
+                "thresholdsOptions": "colors",
+                "thresholdsGrid": [
+                  {
+                    "operator": "==",
+                    "thresholdValue": "Disabled",
+                    "representation": "redBright",
+                    "text": "{0}{1}"
+                  },
+                  {
+                    "operator": "Default",
+                    "thresholdValue": null,
+                    "representation": "green",
+                    "text": "{0}{1}"
+                  }
+                ]
+              }
+            },
+            {
+              "columnMatch": "allowBlobPublicAccess",
+              "formatter": 18,
+              "formatOptions": {
+                "thresholdsOptions": "colors",
+                "thresholdsGrid": [
+                  {
+                    "operator": "==",
+                    "thresholdValue": "Disabled",
+                    "representation": "redBright",
+                    "text": "{0}{1}"
+                  },
+                  {
+                    "operator": "==",
+                    "thresholdValue": "Enabled",
+                    "representation": "green",
+                    "text": "{0}{1}"
+                  },
+                  {
+                    "operator": "Default",
+                    "thresholdValue": null,
+                    "representation": "lightBlue",
+                    "text": "{0}{1}"
+                  }
+                ]
+              }
+            },
+            {
+              "columnMatch": "minimumTlsVersion",
+              "formatter": 18,
+              "formatOptions": {
+                "thresholdsOptions": "colors",
+                "thresholdsGrid": [
+                  {
+                    "operator": "==",
+                    "thresholdValue": "TLS1_2",
+                    "representation": "green",
+                    "text": "{0}{1}"
+                  },
+                  {
+                    "operator": "!=",
+                    "thresholdValue": "TLS1_2",
+                    "representation": "redBright",
+                    "text": "{0}{1}"
+                  },
+                  {
+                    "operator": "Default",
+                    "thresholdValue": null,
+                    "representation": "redBright",
+                    "text": "{0}{1}"
+                  }
+                ]
+              }
+            },
+            {
+              "columnMatch": "allowSharedKeyAccess",
+              "formatter": 18,
+              "formatOptions": {
+                "thresholdsOptions": "colors",
+                "thresholdsGrid": [
+                  {
+                    "operator": "==",
+                    "thresholdValue": "Allow SAS",
+                    "representation": "orange",
+                    "text": "{0}{1}"
+                  },
+                  {
+                    "operator": "Default",
+                    "thresholdValue": null,
+                    "representation": "green",
+                    "text": "{0}{1}"
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      },
+      "name": "query - 0",
+      "styleSettings": {
+        "showBorder": true
+      }
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "resources\r\n| where type == 'microsoft.storage/storageaccounts'\r\n| project location, id\r\n| summarize id= count() by location\r\n",
+        "size": 3,
+        "title": "Storage accounts locations",
+        "queryType": 1,
+        "resourceType": "microsoft.resourcegraph/resources",
+        "crossComponentResources": [
+          "value::all"
+        ],
+        "visualization": "map",
+        "mapSettings": {
+          "locInfo": "AzureLoc",
+          "locInfoColumn": "location",
+          "sizeSettings": "id",
+          "sizeAggregation": "Sum",
+          "labelSettings": "location",
+          "legendMetric": "id",
+          "legendAggregation": "Sum",
+          "itemColorSettings": {
+            "nodeColorField": "id",
+            "colorAggregation": "Sum",
+            "type": "heatmap",
+            "heatmapPalette": "yellowOrangeRed"
+          }
+        }
+      },
+      "name": "query - 2"
+    }
+  ],
+  "fallbackResourceIds": [
+    "Azure Monitor"
+  ],
+  "$schema": "https://github.com/Microsoft/Application-Insights-Workbooks/blob/master/schema/workbook.json"
+}
