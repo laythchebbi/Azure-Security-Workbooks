@@ -1,0 +1,296 @@
+{
+  "version": "Notebook/1.0",
+  "items": [
+    {
+      "type": 12,
+      "content": {
+        "version": "NotebookGroup/1.0",
+        "groupType": "editable",
+        "items": [
+          {
+            "type": 3,
+            "content": {
+              "version": "KqlItem/1.0",
+              "query": "resources\n| where type == \"microsoft.compute/disks\" \n| extend OrphanedDisks = iff(properties['diskState']== \"Unattached\" , \"Unattached\", \"In Use\")\n| project id, name, OrphanedDisks\n| summarize id= count() by tostring(OrphanedDisks)",
+              "size": 1,
+              "title": "Orphaned Disks",
+              "queryType": 1,
+              "resourceType": "microsoft.resourcegraph/resources",
+              "crossComponentResources": [
+                "value::all"
+              ],
+              "visualization": "piechart"
+            },
+            "customWidth": "33",
+            "showPin": true,
+            "name": "query - 0",
+            "styleSettings": {
+              "margin": "4",
+              "showBorder": true
+            }
+          },
+          {
+            "type": 3,
+            "content": {
+              "version": "KqlItem/1.0",
+              "query": "resources\n| where type == \"microsoft.network/publicipaddresses\"\n| extend associatedTo = coalesce(split(properties.ipConfiguration.id, '/')[(-3)], split(properties.natGateway.id, '/')[(-1)], '-')\n| extend PIPassocation = iff(associatedTo == '-', \"No associated\", \"Associated\")\n| project id, PIPassocation\n| summarize id= count() by tostring(PIPassocation)",
+              "size": 1,
+              "title": "Orphaned Public IP addresses",
+              "queryType": 1,
+              "resourceType": "microsoft.resourcegraph/resources",
+              "crossComponentResources": [
+                "value::all"
+              ],
+              "visualization": "piechart",
+              "sortBy": []
+            },
+            "customWidth": "33",
+            "showPin": true,
+            "name": "query - 1",
+            "styleSettings": {
+              "margin": "4",
+              "showBorder": true
+            }
+          },
+          {
+            "type": 3,
+            "content": {
+              "version": "KqlItem/1.0",
+              "query": "resources\n| where type == \"microsoft.network/networkinterfaces\"\n| extend unassocatedNIC = iff((properties.virtualMachine == \"\" and properties.networkSecurityGroup == \"\") == true, \"Unassociated\", \"In Use\")\n| project id, unassocatedNIC \n| summarize id= count() by tostring(unassocatedNIC)",
+              "size": 1,
+              "title": "Oprhaned NICs",
+              "queryType": 1,
+              "resourceType": "microsoft.resourcegraph/resources",
+              "crossComponentResources": [
+                "value::all"
+              ],
+              "visualization": "piechart"
+            },
+            "customWidth": "33",
+            "showPin": true,
+            "name": "query - 2",
+            "styleSettings": {
+              "margin": "4",
+              "showBorder": true
+            }
+          },
+          {
+            "type": 3,
+            "content": {
+              "version": "KqlItem/1.0",
+              "query": "resources\n| where type == \"microsoft.web/serverfarms\"\n| extend assocatedApps =  iff(properties.numberOfSites == 0, \"Unassociated\", \"In Use\")\n| project id, assocatedApps\n| summarize id= count() by tostring(assocatedApps)",
+              "size": 1,
+              "title": "Orphaned App Service Plans",
+              "queryType": 1,
+              "resourceType": "microsoft.resourcegraph/resources",
+              "crossComponentResources": [
+                "value::all"
+              ],
+              "visualization": "piechart"
+            },
+            "customWidth": "33",
+            "showPin": true,
+            "name": "query - 3",
+            "styleSettings": {
+              "margin": "4",
+              "showBorder": true
+            }
+          },
+          {
+            "type": 3,
+            "content": {
+              "version": "KqlItem/1.0",
+              "query": "resources\n| where type =~ 'microsoft.network/networksecuritygroups' \n| extend assocatedNSGs = iff( isnull(properties.networkInterfaces) and isnull(properties.subnets) == true, \"Unassociated\", \"In Use\")\n| project id, assocatedNSGs\n| summarize id= count() by tostring(assocatedNSGs)",
+              "size": 1,
+              "title": "Orphaned NSGs",
+              "queryType": 1,
+              "resourceType": "microsoft.resourcegraph/resources",
+              "crossComponentResources": [
+                "value::all"
+              ],
+              "visualization": "piechart"
+            },
+            "customWidth": "33",
+            "showPin": true,
+            "name": "query - 4",
+            "styleSettings": {
+              "margin": "4",
+              "showBorder": true
+            }
+          },
+          {
+            "type": 3,
+            "content": {
+              "version": "KqlItem/1.0",
+              "query": "resources\n| where type == \"microsoft.network/firewallpolicies\"\n| extend associatedFW = iff( isnull(properties.firewalls) == True, \"Unassociated\",\"In Use\")\n| project id, associatedFW\n| summarize id= count() by tostring(associatedFW)",
+              "size": 1,
+              "title": "Orphaned Firewall Policies",
+              "queryType": 1,
+              "resourceType": "microsoft.resourcegraph/resources",
+              "crossComponentResources": [
+                "value::all"
+              ],
+              "visualization": "piechart"
+            },
+            "customWidth": "33",
+            "showPin": true,
+            "name": "query - 5",
+            "styleSettings": {
+              "margin": "4",
+              "showBorder": true
+            }
+          }
+        ]
+      },
+      "name": "group - 0"
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "resources\n| where type == \"microsoft.compute/disks\" \n| extend state = iff(properties['diskState']== \"Unattached\" , \"Unattached\", \"In Use\")\n| project id, name, subscriptionId, state",
+        "size": 0,
+        "title": "Inventory of Azure Disks",
+        "showRefreshButton": true,
+        "showExportToExcel": true,
+        "queryType": 1,
+        "resourceType": "microsoft.resourcegraph/resources",
+        "crossComponentResources": [
+          "value::all"
+        ],
+        "gridSettings": {
+          "filter": true
+        }
+      },
+      "showPin": true,
+      "name": "query - 1",
+      "styleSettings": {
+        "showBorder": true
+      }
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "resources\n| where type == \"microsoft.network/publicipaddresses\"\n| extend associatedTo = coalesce(split(properties.ipConfiguration.id, '/')[(-3)], split(properties.natGateway.id, '/')[(-1)], '-')\n| extend State = iff(associatedTo == '-', \"No associated\", \"Associated\")\n| project id,name,subscriptionId, State",
+        "size": 0,
+        "title": "Inventory of Public IP addresses",
+        "showRefreshButton": true,
+        "showExportToExcel": true,
+        "queryType": 1,
+        "resourceType": "microsoft.resourcegraph/resources",
+        "crossComponentResources": [
+          "value::all"
+        ],
+        "gridSettings": {
+          "filter": true
+        }
+      },
+      "showPin": true,
+      "name": "query - 2",
+      "styleSettings": {
+        "showBorder": true
+      }
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "resources\n| where type == \"microsoft.network/networkinterfaces\"\n| extend State = iff((properties.virtualMachine == \"\" and properties.networkSecurityGroup == \"\") == true, \"Unassociated\", \"In Use\")\n| project id,name,subscriptionId, State ",
+        "size": 0,
+        "title": "Inventory of NICs",
+        "showRefreshButton": true,
+        "showExportToExcel": true,
+        "queryType": 1,
+        "resourceType": "microsoft.resourcegraph/resources",
+        "crossComponentResources": [
+          "value::all"
+        ],
+        "gridSettings": {
+          "filter": true
+        }
+      },
+      "showPin": true,
+      "name": "query - 3",
+      "styleSettings": {
+        "showBorder": true
+      }
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "resources\n| where type == \"microsoft.web/serverfarms\"\n| extend state =  iff(properties.numberOfSites == 0, \"Have 0 apps associated\", \"In Use\")\n| project id,name,subscriptionId, state",
+        "size": 0,
+        "title": "Inventroy of App Serverice Plans",
+        "showRefreshButton": true,
+        "showExportToExcel": true,
+        "queryType": 1,
+        "resourceType": "microsoft.resourcegraph/resources",
+        "crossComponentResources": [
+          "value::all"
+        ],
+        "gridSettings": {
+          "filter": true
+        }
+      },
+      "showPin": true,
+      "name": "query - 4",
+      "styleSettings": {
+        "showBorder": true
+      }
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "resources\n| where type =~ 'microsoft.network/networksecuritygroups' \n| extend State = iff( isnull(properties.networkInterfaces) and isnull(properties.subnets) == true, \"Unassociated\", \"In Use\")\n| project id,name,subscriptionId, State",
+        "size": 0,
+        "title": "Inventory of NSGs",
+        "showRefreshButton": true,
+        "showExportToExcel": true,
+        "queryType": 1,
+        "resourceType": "microsoft.resourcegraph/resources",
+        "crossComponentResources": [
+          "value::all"
+        ],
+        "gridSettings": {
+          "filter": true
+        }
+      },
+      "showPin": true,
+      "name": "query - 5",
+      "styleSettings": {
+        "showBorder": true
+      }
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "resources\n| where type == \"microsoft.network/firewallpolicies\"\n| extend State = iff( isnull(properties.firewalls) == True, \"Unassociated\",\"In Use\")\n| project id,name,subscriptionId, State",
+        "size": 0,
+        "title": "Inventroy of Azure Firewall Policies",
+        "showRefreshButton": true,
+        "showExportToExcel": true,
+        "queryType": 1,
+        "resourceType": "microsoft.resourcegraph/resources",
+        "crossComponentResources": [
+          "value::all"
+        ],
+        "gridSettings": {
+          "filter": true
+        }
+      },
+      "showPin": true,
+      "name": "query - 6",
+      "styleSettings": {
+        "showBorder": true
+      }
+    }
+  ],
+  "fallbackResourceIds": [
+    "azure monitor"
+  ],
+  "$schema": "https://github.com/Microsoft/Application-Insights-Workbooks/blob/master/schema/workbook.json"
+}
